@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "874253348818",
+    "firebase_url": "https://quick-o-deals-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "quick-o-deals",
+    "storage_bucket": "quick-o-deals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874253348818:android:d8304d482d70e4c6ae220b",
+        "android_client_info": {
+          "package_name": "com.example.quick_o_deals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874253348818-6hb7chgkh201tsfhq4pam4afavbiql9h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quick_o_deals",
+            "certificate_hash": "3b458b85e9e434650eca1256139fe163fec9d0d0"
+          }
+        },
+        {
+          "client_id": "874253348818-5kj319snv95ui7ecdgaurdev7ob6sst8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoTQJTArWa8N3n5q4fFRXbXBqKhtVbC0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874253348818-5kj319snv95ui7ecdgaurdev7ob6sst8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "874253348818-djdc4t45s34uf1g1l2vgn5q653q7gev3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quickODeals"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
