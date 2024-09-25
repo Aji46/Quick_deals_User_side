@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_o_deals/Controller/Provider/location_provider.dart';
 import 'package:quick_o_deals/Controller/Provider/product_provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/loding_provider.dart';
 import 'package:quick_o_deals/View/widget/textformfiled/coustom_text.dart';
@@ -13,8 +14,8 @@ class ProductAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Consumer<ProductProvider>(
-          builder: (context, productProvider, child) {
+        child: Consumer2<ProductProvider, LocationProvider>(
+          builder: (context, productProvider, locationProvider, child) {
             if (productProvider.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -174,7 +175,8 @@ StreamBuilder<QuerySnapshot>(
                         return ElevatedButton(
                           onPressed: loadingProvider.isLoading
                               ? null 
-                              : () => productProvider.saveProduct(context),
+                              : () => 
+                              productProvider.saveProduct(context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             shape: RoundedRectangleBorder(

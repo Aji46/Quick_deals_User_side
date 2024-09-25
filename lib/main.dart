@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/Provider/like_button.dart';
+import 'package:quick_o_deals/Controller/Provider/location_provider.dart';
 import 'package:quick_o_deals/Controller/Provider/profile_image_check.dart';
 import 'package:quick_o_deals/Controller/auth/provider/Serach_provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/email_auth.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
   ChangeNotifierProvider(create: (_) => LikedHiveProvider()),
   ChangeNotifierProvider(create: (_) => User_ProductController()),
      ChangeNotifierProvider(create: (_) => ProductSearchProvider()..fetchProducts()), 
+        ChangeNotifierProvider(create: (_) => LocationProvider()),
  
 
  

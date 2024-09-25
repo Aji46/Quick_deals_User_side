@@ -6,6 +6,7 @@ import 'package:quick_o_deals/View/Pages/home/search_page.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/ad_section_page.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/category_layout.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/horizondal_product.dart';
+import 'package:quick_o_deals/View/widget/home_widgets/location_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -20,22 +21,22 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                    const SizedBox(height: 20),
+                  const LocationWidget(),
                   const SizedBox(height: 20),
                  _buildSearchBar(context),
                   const SizedBox(height: 20),
-                  const Text('Gulberg Phase 4, Lahore', style: TextStyle(color: Colors.grey)),
-                  const SizedBox(height: 20),
                   const Text('Browse Categories', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
-                  CategoryListView(),
+                  const CategoryListView(),
                   const SizedBox(height: 20),
                   _sectionTitle('Featured'),
-                  HorizontalProductList(),
+                  const HorizontalProductList(),
                   const SizedBox(height: 20),
                   AdSectionPage(),
                   const SizedBox(height: 20),
                   _sectionTitle('Most Viewed'),
-                  HorizontalProductList(),
+                  const HorizontalProductList(),
                   const SizedBox(height: 20),
                   _sectionTitle('MotorBikes'),
                   HorizontalProductList(),
@@ -47,8 +48,6 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-
 
   Widget _buildSearchBar(BuildContext context) {
   final productSearchProvider = Provider.of<ProductSearchProvider>(context);

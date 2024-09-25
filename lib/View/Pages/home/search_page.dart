@@ -31,7 +31,16 @@ class SearchPage extends StatelessWidget {
                     provider.searchProducts(query);
                   },
                 ),
-              ),
+              ),const SizedBox(width: 8),
+
+
+      
+
+
+
+
+
+
               Expanded(
                 child: provider.filteredProducts.isEmpty
                     ? const Center(child: Text('No products found'))

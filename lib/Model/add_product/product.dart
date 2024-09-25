@@ -6,6 +6,7 @@ class Product {
   String price;
   String additionalInfo;
   final List<String> images; 
+    final Map<String, dynamic>? location;
 
   Product({
     required this.name,
@@ -13,5 +14,6 @@ class Product {
     required this.price,
     required this.additionalInfo,
     required this.images,
+       this.location,
   });
 }
