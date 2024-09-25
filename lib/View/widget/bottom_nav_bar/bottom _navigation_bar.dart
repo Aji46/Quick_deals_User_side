@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 2:
         return authProvider.isLoggedIn ? ProductAdd() : UserLogin();
       case 3:
-        return FavoritesPage();
+        return const FavoritesPage();
       case 4:
         return authProvider.isLoggedIn ? UserProfile() : UserLogin();
       default:
