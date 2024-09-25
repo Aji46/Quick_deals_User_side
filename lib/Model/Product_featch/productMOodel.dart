@@ -7,7 +7,8 @@ class ProductModel {
   final String productDetails;
   final String productAdditionalInfo;
   final List<dynamic> images;
-
+  final String categoryId; 
+  final DateTime timestamp; 
   ProductModel({
     required this.id,
     required this.productName,
@@ -15,6 +16,8 @@ class ProductModel {
     required this.productDetails,
     required this.productAdditionalInfo,
     required this.images,
+    required this.categoryId,
+    required this.timestamp,
   });
 
   // Factory method to create a ProductModel from Firestore document
@@ -27,6 +30,8 @@ class ProductModel {
       productDetails: data['productDetails'] ?? '',
       productAdditionalInfo: data['productAdditionalInfo'] ?? '',
       images: data['images'] ?? [],
+      categoryId: data['categoryId'] ?? '',
+      timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(), 
     );
   }
 }
