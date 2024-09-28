@@ -5,16 +5,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/Provider/location_provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/loding_provider.dart';
+import 'package:quick_o_deals/Controller/auth/provider/product_location_provider.dart';
 import 'package:quick_o_deals/Model/add_product/product.dart';
 import 'package:quick_o_deals/View/widget/bottom_nav_bar/bottom%20_navigation_bar.dart';
 
 class ProductProvider with ChangeNotifier {
- 
   // Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
   // Firebase Storage instance
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -54,44 +56,36 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-Future<void> saveProduct(BuildContext context) async {
+Future<void> saveProduct(BuildContext context, LatLng? selectedLocation) async {
   final loadingProvider = Provider.of<LoadingProvider>(context, listen: false);
   final locationProvider = Provider.of<LocationProvider>(context, listen: false);
+  final productLocationProvider = Provider.of<ProductLocationProvider>(context, listen: false);
+  
   loadingProvider.setLoading(true);
 
   try {
     if (_selectedImages.isNotEmpty && _selectedCategory != null) {
-      // Fetch current location
+      // Fetch current location (optional; not needed if only saving address)
       await locationProvider.fetchCurrentLocation();
       final Position? currentPosition = locationProvider.currentPosition;
-
-      // Ensure location is available
-      if (currentPosition == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to get location. Please enable location services.')),
-        );
-        loadingProvider.setLoading(false);
-        return;
-      }
 
       // Upload images concurrently
       List<Future<String>> uploadTasks = _selectedImages.map((image) => _uploadImageToFirebase(image)).toList();
       _imageUrls = await Future.wait(uploadTasks);
 
-      // Create Product object with location
+      // Create Product object with address only
       Product newProduct = Product(
         name: productNameController.text,
         details: productDetailsController.text,
         price: productPriceController.text,
         additionalInfo: productAdditionalInfoController.text,
         images: _imageUrls,
-        location: {
-          'latitude': currentPosition.latitude,
-          'longitude': currentPosition.longitude,
-        },
+        // Remove latitude and longitude
+          // Leave this empty or remove it if not needed
+        address: productLocationProvider.selectedAddress ?? '', // Add the address from the provider
       );
 
-      // Save product with location
+      // Save product with address only
       await _saveProductToFirestore(newProduct);
 
       // Show success dialog
@@ -154,16 +148,13 @@ Future<void> saveProduct(BuildContext context) async {
         'productPrice': product.price,
         'productAdditionalInfo': product.additionalInfo,
         'images': product.images,
-        'timestamp': FieldValue.serverTimestamp(),
-        'location':product.location
+        'address': product.address, 
       });
-      print("Product saved successfully");
     } catch (e) {
-      print('Error saving product to Firestore: $e');
+      print('Error saving product: $e');
     }
   }
 
-  // Clear form fields
   void _clearForm() {
     productNameController.clear();
     productDetailsController.clear();

@@ -11,6 +11,7 @@ import 'package:quick_o_deals/Controller/auth/provider/email_auth.dart';
 import 'package:quick_o_deals/Controller/auth/provider/google_auth.dart';
 import 'package:quick_o_deals/Controller/auth/provider/loding_provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/login_.dart';
+import 'package:quick_o_deals/Controller/auth/provider/product_location_provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/register.dart';
 import 'package:quick_o_deals/Controller/auth/provider/user_provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/users_product_edite.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
   ChangeNotifierProvider(create: (_) => User_ProductController()),
      ChangeNotifierProvider(create: (_) => ProductSearchProvider()..fetchProducts()), 
         ChangeNotifierProvider(create: (_) => LocationProvider()),
+        ChangeNotifierProvider(create: (_) => ProductLocationProvider()),
  
 
  

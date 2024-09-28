@@ -1,12 +1,11 @@
-
-
 class Product {
-  String name;
-  String details;
-  String price;
-  String additionalInfo;
-  final List<String> images; 
-    final Map<String, dynamic>? location;
+  final String name;
+  final String details;
+  final String price;
+  final String additionalInfo;
+  final List<String> images;
+
+  final String address; // Add this line for address
 
   Product({
     required this.name,
@@ -14,6 +13,6 @@ class Product {
     required this.price,
     required this.additionalInfo,
     required this.images,
-       this.location,
+    required this.address, // Add this line for address
   });
 }
