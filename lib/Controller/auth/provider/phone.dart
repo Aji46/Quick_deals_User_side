@@ -6,21 +6,24 @@ import 'package:quick_o_deals/Controller/auth/provider/login_.dart';
 import 'package:quick_o_deals/View/Pages/use_login/otp_screen.dart';
 import 'package:quick_o_deals/View/widget/bottom_nav_bar/bottom%20_navigation_bar.dart';
 
+
 class PhoneNumberProvider extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
-  String selectedCountryCode = "+91";
+  String selectedCountryCode = "+91";  // Default country code
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
 
+  // Update the country code selected by the user
   void updateCountryCode(String newCountryCode) {
     selectedCountryCode = newCountryCode;
     notifyListeners();
   }
 
+  // Trigger the phone number verification process
   Future<void> signInWithPhoneNumber(BuildContext context) async {
     try {
       await _auth.verifyPhoneNumber(
-        phoneNumber: "$selectedCountryCode${phoneController.text.trim()}",
+        phoneNumber: "$selectedCountryCode${phoneController.text.trim()}",  // Combine country code with phone number
         verificationCompleted: (PhoneAuthCredential credential) async {
           await _signInWithCredential(credential, context);
         },
@@ -34,61 +37,71 @@ class PhoneNumberProvider extends ChangeNotifier {
         codeAutoRetrievalTimeout: (String verificationId) {
           print("Auto-retrieval timeout for verificationId: $verificationId");
         },
-        timeout: const Duration(seconds: 60),
+        timeout: const Duration(seconds: 60),  // Set a timeout duration for auto-retrieval of OTP
       );
     } catch (e) {
       print("Error during phone number verification: $e");
     }
   }
 
-  Future<void> _signInWithCredential(
-      PhoneAuthCredential credential, BuildContext context) async {
+  // Sign in the user with the provided credential
+  Future<void> _signInWithCredential(PhoneAuthCredential credential, BuildContext context) async {
     try {
-      UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      UserCredential userCredential = await _auth.signInWithCredential(credential);
       _user = userCredential.user;
       print("User signed in: ${_user?.uid}");
 
+      // Save user data to Firestore after signing in
       await _saveUserDataToFirestore();
 
+      // Set login status to true in the provider
       Provider.of<logProvider>(context, listen: false).setLoginStatus(true);
 
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // await prefs.setBool('isLoggedIn', true); // Update login status
-
-      // Notify listeners if necessary
-      notifyListeners();
-
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (ctx) => MyHomePage()));
+      // Navigate to the home page
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => MyHomePage()));
     } catch (e) {
       print("Error signing in with credential: $e");
     }
   }
 
+  // Save the user data to Firestore after successful sign-in
   Future<void> _saveUserDataToFirestore() async {
     if (_user != null) {
-      final userRef =
-          FirebaseFirestore.instance.collection('users').doc(_user!.uid);
+      final userRef = FirebaseFirestore.instance.collection('users').doc(_user!.uid);
 
       await userRef.set({
-        'email': '',
+        'email': '',  // You can replace these with actual data if available
         'phoneNumber': _user!.phoneNumber ?? '',
         'profilePicture': '',
         'username': '',
-      }, SetOptions(merge: true));
+      }, SetOptions(merge: true));  // Merge data to avoid overwriting existing fields
     }
   }
 
+  // Handle any verification errors during the phone number verification process
   void _handleVerificationError(FirebaseAuthException e) {
-    if (e.code == 'invalid-phone-number') {
-      print('The provided phone number is not valid.');
-    } else {
-      print('Verification failed. Error: ${e.message}');
+    String errorMessage;
+
+    switch (e.code) {
+      case 'invalid-phone-number':
+        errorMessage = 'The provided phone number is not valid.';
+        break;
+      case 'too-many-requests':
+        errorMessage = 'Too many requests. Please try again later.';
+        break;
+      case 'operation-not-allowed':
+        errorMessage = 'Phone authentication is not enabled for this project.';
+        break;
+      default:
+        errorMessage = 'Verification failed. Error: ${e.message}';
+        break;
     }
-    // Show an error message to the user
+
+    print(errorMessage);
+    // Optionally, you can show a dialog or snack bar to inform the user
   }
 
+  // Navigate to the OTP screen after the code has been sent
   void _navigateToSMSCodeScreen(BuildContext context, String verificationId) {
     Navigator.of(context).push(
       MaterialPageRoute(

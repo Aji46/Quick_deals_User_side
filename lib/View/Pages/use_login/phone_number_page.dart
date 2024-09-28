@@ -17,7 +17,7 @@ class PhoneNumberPage extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => PhoneNumberProvider()),
-        ChangeNotifierProvider(create: (_) => AuthProvider(authRepository: AuthRepository())), // Ensure AuthProvider is properly initialized
+        ChangeNotifierProvider(create: (_) => AuthProvider(authRepository: AuthRepository())),
       ],
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -46,33 +46,30 @@ class PhoneNumberPage extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showCountryPicker(
-                                    context: context,
-                                    showPhoneCode: true,
-                                    onSelect: (Country country) {
-                                      provider.updateCountryCode("+${country.phoneCode}");
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 12.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Text(
-                                    provider.selectedCountryCode,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
+                            GestureDetector(
+                              onTap: () {
+                                showCountryPicker(
+                                  context: context,
+                                  showPhoneCode: true,
+                                  onSelect: (Country country) {
+                                    provider.updateCountryCode("+${country.phoneCode}");
+                                  },
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 12.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(
+                                  provider.selectedCountryCode,
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                             ),
                             const SizedBox(width: 10),
-                            Flexible(
+                            Expanded(
                               child: CustomTextFormField(
                                 controller: provider.phoneController,
                                 labelText: "Phone Number",
@@ -82,20 +79,18 @@ class PhoneNumberPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20),
-                        SizedBox(
-                          height: 40,
-                          width: 110,
-                          child: 
-             
-
-                          CustomButton(
+                        const SizedBox(height: 20),
+                        Center( // Wrap in Center or use Row for alignment
+                          child: SizedBox(
+                            height: 40,
+                            width: 110,
+                            child: CustomButton(
                               buttonText: 'Get OTP',
                               onPressed: () {
                                 provider.signInWithPhoneNumber(context);
                               },
                             ),
-                          
+                          ),
                         ),
                       ],
                     );

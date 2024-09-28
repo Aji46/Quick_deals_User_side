@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:quick_o_deals/Controller/user_data_service.dart';
 
@@ -12,6 +11,9 @@ class ProfileEditProvider with ChangeNotifier {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+
+  String? _imagePath;
+  String? get imagePath => _imagePath;
 
   ProfileEditProvider(BuildContext context) {
     _loadUserData(context);
@@ -28,61 +30,68 @@ class ProfileEditProvider with ChangeNotifier {
     }
   }
 
-  String? _imagePath;
-
-  String? get imagePath => _imagePath;
-
-  void selectImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      
-      _imagePath = pickedFile.path;
-      notifyListeners();
-    }
-  }
-
-  Future<void> updateUserProfile(BuildContext context,image) async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-        await user.updateEmail(emailController.text.trim());
-
-        if (image != null) {
-          File imagefile = File(image.toString());
-          String fileName = basename(imagefile.path);
-          Reference firebaseStorageRef =
-              FirebaseStorage.instance.ref().child('uploads/$fileName');
-          
-          UploadTask uploadTask = firebaseStorageRef.putFile(imagefile);
-          TaskSnapshot taskSnapshot = await uploadTask;
-          String downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
 
-          final userRef =
-              FirebaseFirestore.instance.collection('users').doc(user.uid);
+Future<void> updateUserProfile(BuildContext context, String? imagePath, {String? image}) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String? downloadUrl; 
 
-          await userRef.set({
-            'username': usernameController.text.trim(),
-            'phoneNumber': phoneNumberController.text.trim(),
-            'email': emailController.text.trim(),
-            'profilePicture': downloadUrl,
-          }, SetOptions(merge: true));
+      if (image != null && image.isNotEmpty) {
+        File imageFile = File(image);
+        if (!imageFile.existsSync()) {
+          print("File does not exist at path: ${imageFile.path}");
+          return; // Exit if file doesn't exist
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully!')),
-        );
+        String fileName = basename(imageFile.path);
+        Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
+          
+        // Start uploading the file
+        UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+        TaskSnapshot taskSnapshot = await uploadTask;
 
-        _loadUserData(context);
+        // Wait for the upload to complete and get the download URL
+        downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+        print("Image uploaded successfully! URL: $downloadUrl");
+      } else {
+        // Keep the existing profile picture if no new image is selected
+        downloadUrl = _imagePath;
       }
-    } catch (error) {
-      // Handle errors
+
+      // Update Firestore with new user profile data
+      final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      await userRef.set({
+        'username': usernameController.text.trim(),
+        'phoneNumber': phoneNumberController.text.trim(),
+        'email': emailController.text.trim(),
+        'profilePicture': downloadUrl,
+      }, SetOptions(merge: true));
+
+      // Notify user of success
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update profile: $error')),
+        const SnackBar(content: Text('Profile updated successfully!')),
       );
+
+      // Reload user data to reflect changes
+      _loadUserData(context);
     }
+  } catch (error) {
+    // Handle and log the error appropriately
+    print("Error updating profile: $error");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to update profile: $error')),
+    );
+  }
+}
+
+
+
+  Future<String?> _getCurrentProfilePicture(String uid) async {
+    final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
+    final userSnapshot = await userRef.get();
+    return userSnapshot.data()?['profilePicture'] as String?;
   }
 }

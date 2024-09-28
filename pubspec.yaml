@@ -39,7 +39,7 @@ dependencies:
   dot_curved_bottom_nav: ^0.0.2
   equatable: ^2.0.5
   firebase_auth: ^4.16.0
-  firebase_core: ^2.24.2
+  firebase_core: ^2.32.0
   firebase_storage: ^11.6.0
   flutter:
     sdk: flutter
@@ -61,6 +61,9 @@ dependencies:
   geolocator: ^13.0.1
   permission_handler: ^11.3.1
   geocoding: ^3.0.0
+  flutter_map: ^5.0.0
+  latlong2: ^0.9.1
+  firebase_app_check: ^0.2.2
 
 dev_dependencies:
 

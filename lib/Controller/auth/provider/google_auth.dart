@@ -65,4 +65,6 @@ class GoogleSignInProvider with ChangeNotifier {
     _user = null;
     notifyListeners();
   }
+
+  
 }

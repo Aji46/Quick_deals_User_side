@@ -23,7 +23,7 @@ class ProfileAvatarSection extends StatelessWidget {
           Stack(
             children: [
              ProfileEditAvatar (
-                      avatarUrl: userDetails['profilePicture'],
+                      avatarUrl: userDetails['profilePicture'] ?? 'assets/quick_o_deal.png',
                     ),
               Positioned(
                 bottom: 0,

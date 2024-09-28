@@ -168,6 +168,53 @@ StreamBuilder<QuerySnapshot>(
                   ),
                   
                   const SizedBox(height: 10),
+                  // Location selection with icon
+// Row(
+//   children: [
+//     IconButton(
+//       icon: const Icon(Icons.location_on),
+//       color: const Color.fromARGB(255, 243, 33, 33),
+//       iconSize: 35.0,
+//       onPressed: () async {
+//         // Ensure that navigation is not already in progress
+//         if (ModalRoute.of(context)?.isCurrent ?? false) {
+//           // Open the map to select a location
+//           LatLng? result = await Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//               builder: (context) => OpenStreetMapExample(),
+//             ),
+//           );
+
+//           if (result != null) {
+//             setState(() {
+//               selectedLocation = result;
+//             });
+//             print("Selected location: ${result.latitude}, ${result.longitude}");
+//           } else {
+//             print("No location selected");
+//           }
+//         }
+//       },
+//     ),
+//     // Display the selected location's coordinates if available
+//     if (selectedLocation != null)
+//       Expanded(
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//           child: Text(
+//             "Location: ${selectedLocation!.latitude.toStringAsFixed(4)}, ${selectedLocation!.longitude.toStringAsFixed(4)}",
+//             overflow: TextOverflow.ellipsis,
+//             style: const TextStyle(
+//               fontSize: 16,
+//               color: Colors.black,
+//             ),
+//           ),
+//         ),
+//       ),
+//   ],
+// ),
+
                   SizedBox(
                     width: double.infinity,
                     child: Consumer<LoadingProvider>(
