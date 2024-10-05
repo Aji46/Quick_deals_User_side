@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_o_deals/Model/Product_featch/productMOodel.dart';
@@ -44,81 +45,82 @@ class AdSectionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAdCarousel(List<ProductModel> ads) {
-    final PageController pageController = PageController();
-    Timer.periodic(Duration(seconds: 3), (Timer timer) {
-      if (pageController.hasClients) {
-        int nextPage = pageController.page!.toInt() + 1;
-        if (nextPage >= ads.length) {
-          nextPage = 0;
-        }
-        pageController.animateToPage(
-          nextPage,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeIn,
-        );
+Widget _buildAdCarousel(List<ProductModel> ads) {
+  final PageController pageController = PageController();
+  Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    if (pageController.hasClients) {
+      int nextPage = pageController.page!.toInt() + 1;
+      if (nextPage >= ads.length) {
+        nextPage = 0;
       }
-    });
+      pageController.animateToPage(
+        nextPage,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+      );
+    }
+  });
 
-    return SizedBox(
-      height: 200,
-      child: PageView.builder(
-        controller: pageController,
-        itemCount: ads.length,
-        itemBuilder: (context, index) {
-          var ad = ads[index];
-          String imageUrl = ad.images.isNotEmpty ? ad.images[0] : 'assets/placeholder.png';
+  return SizedBox(
+    height: 200,
+    child: PageView.builder(
+      controller: pageController,
+      itemCount: ads.length,
+      itemBuilder: (context, index) {
+        var ad = ads[index];
+        String imageUrl = ad.images.isNotEmpty ? ad.images[0] : 'assets/placeholder.png';
 
-          return Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: 200,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/placeholder.png',
-                    image: imageUrl,
-                    fit: BoxFit.cover,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/placeholder.png',
-                        fit: BoxFit.cover,
-                      );
-                    },
+        return Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  placeholder: (context, url) => Container(
+                    color: Colors.white,
                   ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/placeholder.png',
+                    fit: BoxFit.cover,
+                  ),
+                  fit: BoxFit.cover,
                 ),
               ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ad.productName,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 18,
-                        shadows: [Shadow(blurRadius: 10, color: Colors.black)],
-                      ),
+            ),
+            Positioned(
+              bottom: 20,
+              left: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ad.productName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 18,
+                      shadows: [Shadow(blurRadius: 10, color: Colors.black)],
                     ),
-                    Text(
-                      'Rs ${ad.productPrice}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        shadows: [Shadow(blurRadius: 10, color: Colors.black)],
-                      ),
+                  ),
+                  Text(
+                    'Rs ${ad.productPrice}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      shadows: [Shadow(blurRadius: 10, color: Colors.black)],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          );
-        },
-      ),
-    );
-  }
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
+
 }

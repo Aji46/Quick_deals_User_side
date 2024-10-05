@@ -4,8 +4,8 @@ class Product {
   final String price;
   final String additionalInfo;
   final List<String> images;
+  final String address;// Add this line for address
 
-  final String address; // Add this line for address
 
   Product({
     required this.name,

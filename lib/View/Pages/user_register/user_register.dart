@@ -8,18 +8,17 @@ import 'package:quick_o_deals/View/widget/register/policy_text.dart';
 import 'package:quick_o_deals/View/widget/register/sigh_up_button.dart';
 import 'package:quick_o_deals/View/widget/register/textfiled.dart';
 
-class UserRegister extends StatefulWidget {
+class UserRegister extends StatelessWidget {
   UserRegister({Key? key}) : super(key: key);
 
-  @override
-  _UserRegisterState createState() => _UserRegisterState();
-}
-
-class _UserRegisterState extends State<UserRegister> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController usernameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController phoneController = TextEditingController();
 
   @override

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +6,7 @@ import 'package:quick_o_deals/Controller/Provider/like_button.dart';
 import 'package:quick_o_deals/Model/Product_featch/productMOodel.dart';
 import 'package:quick_o_deals/View/Pages/product_detailes/product_detailes.dart';
 import 'package:shimmer/shimmer.dart';
+
 class HorizontalProductList extends StatelessWidget {
   const HorizontalProductList({super.key});
 
@@ -37,7 +39,7 @@ class HorizontalProductList extends StatelessWidget {
         itemCount: 5,
         itemBuilder: (context, index) {
           return Shimmer.fromColors(
-            baseColor: const Color.fromARGB(255, 186, 186, 186)!,
+            baseColor: const Color.fromARGB(255, 186, 186, 186),
             highlightColor: Colors.grey[100]!,
             child: Container(
               width: 150,
@@ -100,39 +102,21 @@ class HorizontalProductList extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.grey[300],
                               borderRadius: BorderRadius.circular(10),
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
-                                fit: BoxFit.cover,
-                              ),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                imageUrl,
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrl,
                                 fit: BoxFit.cover,
-                                   loadingBuilder: (BuildContext context,
-                                          Widget child,
-                                          ImageChunkEvent? loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          return child;
-                                        } else {
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      (loadingProgress
-                                                              .expectedTotalBytes ??
-                                                          1)
-                                                  : null,
-                                            ),
-                                          );
-                                        }},
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Center(child: Icon(Icons.error));
-                                },
+                                placeholder: (context, url) => Container(
+                                  height: 100,
+                                  width: 150,
+                                  color: Colors.grey[300],
+                                  child: const Center(child: CircularProgressIndicator()),
+                                ),
+                                errorWidget: (context, url, error) => const Center(
+                                  child: Icon(Icons.error),
+                                ),
                               ),
                             ),
                           ),
@@ -143,15 +127,26 @@ class HorizontalProductList extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text('Rs ${product.productPrice}', style: const TextStyle(color: Colors.green)),
-                          Text(product.productDetails, style: const TextStyle(color: Colors.grey), overflow: TextOverflow.ellipsis),
-                          Text(product.productAdditionalInfo, style: const TextStyle(fontSize: 12, color: Colors.grey), overflow: TextOverflow.ellipsis),
+                          Text(
+                            product.productDetails,
+                            style: const TextStyle(color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            product.productAdditionalInfo,
+                            style: const TextStyle(fontSize: 12, color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                       Positioned(
                         top: 5,
                         right: 5,
                         child: IconButton(
-                          icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border, color: isLiked ? Colors.red : Colors.white),
+                          icon: Icon(
+                            isLiked ? Icons.favorite : Icons.favorite_border,
+                            color: isLiked ? Colors.red : Colors.white,
+                          ),
                           onPressed: () {
                             likedProductsProvider.toggleLike(product.id);
                           },

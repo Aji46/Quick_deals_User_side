@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,17 +15,14 @@ import 'package:quick_o_deals/Model/add_product/product.dart';
 import 'package:quick_o_deals/View/widget/bottom_nav_bar/bottom%20_navigation_bar.dart';
 
 class ProductProvider with ChangeNotifier {
-  // Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
-  // Firebase Storage instance
   final FirebaseStorage _storage = FirebaseStorage.instance;
-
-  // TextEditingControllers for managing form inputs
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController productDetailsController = TextEditingController();
   final TextEditingController productPriceController = TextEditingController();
   final TextEditingController productAdditionalInfoController = TextEditingController();
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
+
 
   // List to store selected images
   List<XFile> _selectedImages = [];
@@ -82,7 +80,7 @@ Future<void> saveProduct(BuildContext context, LatLng? selectedLocation) async {
         images: _imageUrls,
         // Remove latitude and longitude
           // Leave this empty or remove it if not needed
-        address: productLocationProvider.selectedAddress ?? '', // Add the address from the provider
+        address: productLocationProvider.selectedAddress ?? '', // Add the address from the provider// Add the address from the provider
       );
 
       // Save product with address only
@@ -148,7 +146,11 @@ Future<void> saveProduct(BuildContext context, LatLng? selectedLocation) async {
         'productPrice': product.price,
         'productAdditionalInfo': product.additionalInfo,
         'images': product.images,
-        'address': product.address, 
+        'address': product.address,
+        'createdAt': FieldValue.serverTimestamp(),
+        'userId':userId ,
+        
+
       });
     } catch (e) {
       print('Error saving product: $e');

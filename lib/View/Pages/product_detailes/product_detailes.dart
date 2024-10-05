@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,7 @@ class ProductDetailsPage extends StatelessWidget {
           String productPrice = productData['productPrice'];
           String productDetails = productData['productDetails'];
           String productAdditionalInfo = productData['productAdditionalInfo'];
+          String Location = productData['address'];
           List<dynamic> images = productData['images'];
 
           return SingleChildScrollView(
@@ -51,26 +53,30 @@ class ProductDetailsPage extends StatelessWidget {
                                 child: Stack(
                                   children: [
                                     // Placeholder while loading the image
-                                    Center(child: CircularProgressIndicator()),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: FadeInImage.assetNetwork(
-                                        placeholder: 'assets/imge place holder.jpg', // Local placeholder image
-                                        image: imageUrl,
-                                        fit: BoxFit.cover,
-                                        width: 300,
-                                        height: 300,
-                                        fadeInDuration: const Duration(milliseconds: 500),
-                                        fadeOutDuration: const Duration(milliseconds: 500),
-                                      ),
-                                    ),
+                                    const Center(child: CircularProgressIndicator()),
+                                     ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                fit: BoxFit.cover,
+                                
+                                placeholder: (context, url) => Container(
+                                  height: 300,
+                                  color: Colors.grey[300],
+                                  child: const Center(child: CircularProgressIndicator()),
+                                ),
+                                errorWidget: (context, url, error) => const Center(
+                                  child: Icon(Icons.error),
+                                ),
+                              ),
+                            ),
                                   ],
                                 ),
                               ),
                             );
                           },
                         )
-                      : Image.asset('assets/imge place holder.jpg', height: 300, width: 300),
+                      : Image.asset(''),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -94,6 +100,16 @@ class ProductDetailsPage extends StatelessWidget {
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(productAdditionalInfo),
+                  const SizedBox(height: 16),
+                const Text(
+                  'Location:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(Location),
+                         const SizedBox(height: 16),
+                ElevatedButton(onPressed: (){
+
+                }, child: const Text("Make enquiry",style: TextStyle(color: Colors.blueAccent))),
               ],
             ),
           );
