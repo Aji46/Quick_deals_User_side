@@ -17,6 +17,7 @@ import 'package:quick_o_deals/Controller/auth/provider/user_provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/users_product_edite.dart';
 import 'package:quick_o_deals/Controller/validation/provider.dart';
 import 'package:quick_o_deals/Model/auth/auth.dart';
+import 'package:quick_o_deals/View/Pages/chat/chating_provider.dart';
 import 'package:quick_o_deals/View/widget/bottom_nav_bar/bottom%20_navigation_bar.dart';
 import 'package:quick_o_deals/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
      ChangeNotifierProvider(create: (_) => ProductSearchProvider()..fetchProducts()), 
         ChangeNotifierProvider(create: (_) => LocationProvider()),
         ChangeNotifierProvider(create: (_) => ProductLocationProvider()),
+        ChangeNotifierProvider(create: (_) => ChattingProvider()),
  
 
  

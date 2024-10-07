@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_o_deals/Controller/auth/provider/login_.dart';
+import 'package:quick_o_deals/View/Pages/chat/chatscreen.dart';
+import 'package:quick_o_deals/View/Pages/use_login/user_login.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final String productId;
@@ -107,9 +111,34 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
                 Text(Location),
                          const SizedBox(height: 16),
-                ElevatedButton(onPressed: (){
+              ElevatedButton(
+  onPressed: () {
+    // Access the logProvider to check if the user is logged in
+    final logedProvider = Provider.of<logProvider>(context, listen: false);
+    
+    // Check login status and navigate accordingly
+    if (logedProvider.isLoggedIn) {
 
-                }, child: const Text("Make enquiry",style: TextStyle(color: Colors.blueAccent))),
+      String userId = productData['userId'];
+      // Navigate to the chat screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChatScreen(userId: userId)), // Replace ChatScreen with your actual chat screen widget
+      );
+    } else {
+      // Navigate to the login screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => UserLogin()), // Replace LoginScreen with your actual login screen widget
+      );
+    }
+  },
+  child: const Text(
+    "Make enquiry",
+    style: TextStyle(color: Colors.blueAccent),
+  ),
+)
+
               ],
             ),
           );
