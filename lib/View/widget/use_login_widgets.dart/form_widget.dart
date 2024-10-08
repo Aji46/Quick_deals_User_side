@@ -12,7 +12,7 @@ class LoginForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
 
-  LoginForm({
+  const LoginForm({super.key, 
     required this.formKey,
     required this.emailController,
     required this.passwordController,
@@ -53,9 +53,11 @@ class LoginForm extends StatelessWidget {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       await prefs.setString('userEmail', emailController.text);
                       await prefs.setBool('isLoggedIn', true);
+                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pushReplacementNamed('/home');
                     }
                   } catch (e) {
+                    // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(e.toString())),
                     );
@@ -64,7 +66,7 @@ class LoginForm extends StatelessWidget {
               },
               buttonText: 'Sign In',
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
           ],
         ),
       ),

@@ -6,7 +6,7 @@ class ImageWidget extends StatelessWidget {
   final double height;
   final double width;
 
-  ImageWidget({
+  const ImageWidget({
     required this.imagePath,
     required this.height,
     required this.width,

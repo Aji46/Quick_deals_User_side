@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_o_deals/View/Pages/chat/chating_provider.dart';
+import 'package:quick_o_deals/Controller/auth/provider/chating_provider.dart';
 import 'package:quick_o_deals/View/Pages/chat/chatscreen.dart';
 
 class ChatListScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class ChatListScreen extends StatelessWidget {
             stream: chattingProvider.getAllChatRooms(currentUserId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
               }
 
               if (snapshot.hasError) {

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_o_deals/View/Pages/chat/chating_provider.dart';
+import 'package:quick_o_deals/Controller/auth/provider/chating_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -105,7 +105,7 @@ Future<void> _fetchUserDetails() async {
             }
 
             if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
             }
 
             WidgetsBinding.instance.addPostFrameCallback((_) {

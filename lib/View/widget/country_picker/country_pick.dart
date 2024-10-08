@@ -1,10 +1,11 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:quick_o_deals/contants/color.dart';
 
 class CountryPickerButton extends StatelessWidget {
   final void Function(Country)? onCountrySelected;
 
-  const CountryPickerButton({Key? key, this.onCountrySelected}) : super(key: key);
+  const CountryPickerButton({super.key, this.onCountrySelected});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class CountryPickerButton extends StatelessWidget {
           },
           moveAlongWithKeyboard: false,
           countryListTheme: CountryListThemeData(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(40.0),
               topRight: Radius.circular(40.0),
             ),
@@ -36,8 +37,8 @@ class CountryPickerButton extends StatelessWidget {
                 ),
               ),
             ),
-            searchTextStyle: TextStyle(
-              color: Colors.blue,
+            searchTextStyle: const TextStyle(
+              color: MyColors.mycolor3,
               fontSize: 18,
             ),
           ),

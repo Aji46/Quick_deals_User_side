@@ -112,7 +112,7 @@ class HorizontalProductList extends StatelessWidget {
                                   height: 100,
                                   width: 150,
                                   color: Colors.grey[300],
-                                  child: const Center(child: CircularProgressIndicator()),
+                                  child: const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),)),
                                 ),
                                 errorWidget: (context, url, error) => const Center(
                                   child: Icon(Icons.error),

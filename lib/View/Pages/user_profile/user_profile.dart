@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/email_auth.dart';
 import 'package:quick_o_deals/View/Pages/user_product/user_product.dart';
+import 'package:quick_o_deals/View/Pages/user_register/terms_and_policy.dart';
 import 'package:quick_o_deals/View/widget/bottom_nav_bar/bottom%20_navigation_bar.dart';
 import 'package:quick_o_deals/View/widget/user_profile/circle_avathar.dart';
 import 'package:quick_o_deals/View/widget/user_profile/profile_edite_button.dart';
 import 'package:quick_o_deals/View/widget/user_profile/profile_options.dart';
 
 class UserProfile extends StatelessWidget {
+  const UserProfile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
@@ -17,7 +20,7 @@ class UserProfile extends StatelessWidget {
           WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                                  MaterialPageRoute(builder: (context) => const MyHomePage()),
                                 );// Adjust the route name as needed
           });
           return const Center(child: CircularProgressIndicator());
@@ -71,17 +74,17 @@ class UserProfile extends StatelessWidget {
                           onTap: () {
                               Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => UserProduct()),
+                                  MaterialPageRoute(builder: (context) => const UserProduct()),
                                 );
                           },
                         ),
                           const SizedBox(height: 16),
                        
                         ProfileOption(
-                          icon: Icons.settings,
-                          title: 'Settings',
+                          icon: Icons.privacy_tip_outlined,
+                          title: 'Privacy & Policy',
                           onTap: () {
-                            // Action for Settings
+                             Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const PrivacyPolicy()));
                           },
                         ),
                         const SizedBox(height: 16),
@@ -100,6 +103,7 @@ class UserProfile extends StatelessWidget {
                             // Action for Help and Support
                           },
                         ),
+                           const SizedBox(height: 26),
                         const Center(child: SignoutButton()),
                       ],
                     ),

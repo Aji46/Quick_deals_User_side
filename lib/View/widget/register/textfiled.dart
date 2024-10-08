@@ -9,7 +9,7 @@ class UserFormPage extends StatelessWidget {
   final TextEditingController phoneController;
   final GlobalKey<FormState> formKey;  
 
-  UserFormPage({
+  const UserFormPage({super.key, 
     required this.usernameController,
     required this.emailController,
     required this.passwordController,

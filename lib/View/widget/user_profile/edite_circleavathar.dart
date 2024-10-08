@@ -21,7 +21,7 @@ class ProfileEditAvatar extends StatelessWidget {
             ? FileImage(File(imagePath))
             : avatarUrl.isNotEmpty
                 ? NetworkImage(avatarUrl)
-                : AssetImage('assets/ava.png') as ImageProvider;
+                : const AssetImage('assets/ava.png') as ImageProvider;
 
         return CircleAvatar(
           backgroundImage: backgroundImage,

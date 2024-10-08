@@ -14,14 +14,14 @@ class CustomTextFormField extends StatelessWidget {
    final String? prefixText; 
 
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.keyboardType,
     this.validator,
     this.isPassword = false,
      this.prefixText, 
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

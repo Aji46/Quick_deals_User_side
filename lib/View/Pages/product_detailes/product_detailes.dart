@@ -10,13 +10,13 @@ import 'package:quick_o_deals/contants/color.dart';
 class ProductDetailsPage extends StatelessWidget {
   final String productId;
 
-  ProductDetailsPage({required this.productId});
+  const ProductDetailsPage({required this.productId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Details'),
+        title: const Text('Product Details'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
@@ -25,11 +25,11 @@ class ProductDetailsPage extends StatelessWidget {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
           }
 
           if (!snapshot.hasData || !snapshot.data!.exists) {
-            return Center(child: Text("Product not found"));
+            return const Center(child: Text("Product not found"));
           }
 
           var productData = snapshot.data!.data() as Map<String, dynamic>;
@@ -37,6 +37,7 @@ class ProductDetailsPage extends StatelessWidget {
           String productPrice = productData['productPrice'];
           String productDetails = productData['productDetails'];
           String productAdditionalInfo = productData['productAdditionalInfo'];
+          // ignore: non_constant_identifier_names
           String Location = productData['address'];
           List<dynamic> images = productData['images'];
 
@@ -56,7 +57,7 @@ class ProductDetailsPage extends StatelessWidget {
                             String imageUrl = images[index];
                             return Padding(
                               padding: const EdgeInsets.only(right: 8.0),
-                              child: Container(
+                              child: SizedBox(
                                 width: 300,
                                 child: Stack(
                                   children: [
@@ -103,16 +104,16 @@ class ProductDetailsPage extends StatelessWidget {
                       const TextStyle(fontSize: 20, color: MyColors.mycolor6),
                 ),
                 const SizedBox(height: 16),
-                Text(
+                const Text(
                   'Details:',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(productDetails),
                 const SizedBox(height: 16),
-                Text(
+                const Text(
                   'Additional Info:',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(productAdditionalInfo),

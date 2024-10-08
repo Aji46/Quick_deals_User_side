@@ -11,7 +11,7 @@ class SignUpButton extends StatelessWidget {
   final TextEditingController passwordController;
   final bool acceptedTerms;
 
-  SignUpButton({
+  const SignUpButton({super.key, 
     required this.formKey,
     required this.usernameController,
     required this.emailController,
@@ -33,12 +33,14 @@ class SignUpButton extends StatelessWidget {
                     phoneNumber: phoneController.text,
                     password: passwordController.text,
                   );
+                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('User registered successfully')),
                   );
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => const MyHomePage()));
                 } catch (e) {
+                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error: $e')),
                   );

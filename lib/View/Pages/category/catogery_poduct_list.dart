@@ -35,7 +35,7 @@ class CategoryProductList extends StatelessWidget {
         future: getProductsByCategory(categoryId), // Call the function to get filtered products
         builder: (BuildContext context, AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator()); // Show loading indicator
+            return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),)); // Show loading indicator
           } else if (snapshot.hasError) {
             return const Center(child: Text('Error fetching products')); // Handle errors
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

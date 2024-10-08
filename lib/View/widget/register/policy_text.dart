@@ -4,7 +4,7 @@ import 'package:quick_o_deals/Controller/auth/provider/register.dart';
 import 'package:quick_o_deals/View/Pages/user_register/terms_and_policy.dart';
 
 class TermsPolicyWidget extends StatelessWidget {
-  const TermsPolicyWidget({Key? key}) : super(key: key);
+  const TermsPolicyWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

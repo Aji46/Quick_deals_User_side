@@ -9,6 +9,7 @@ import 'package:quick_o_deals/Controller/auth/provider/product_location_provider
 import 'package:quick_o_deals/View/Pages/product_add/location.dart';
 import 'package:quick_o_deals/View/widget/textformfiled/coustom_text.dart';
 import 'package:quick_o_deals/View/widget/validation/validation.dart';
+import 'package:quick_o_deals/contants/color.dart';
 
 class ProductAdd extends StatefulWidget {
   @override
@@ -119,7 +120,7 @@ class _ProductAddState extends State<ProductAdd> {
       stream: FirebaseFirestore.instance.collection('category').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent));
         }
 
         var categories = snapshot.data!.docs.map((doc) {
@@ -193,12 +194,12 @@ class _ProductAddState extends State<ProductAdd> {
       children: [
         IconButton(
           icon: const Icon(Icons.location_on),
-          color: const Color.fromARGB(255, 243, 33, 33),
+          color: MyColors.mycolor4,
           iconSize: 35.0,
           onPressed: () async {
             final result = await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => OpenStreetMapExample()),
+              MaterialPageRoute(builder: (context) => const OpenStreetMapExample()),
             );
 
             if (result != null) {

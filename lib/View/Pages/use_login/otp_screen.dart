@@ -5,10 +5,10 @@ class VerifyOtp extends StatefulWidget {
   final Function(String) onCodeEntered;
 
   const VerifyOtp(
-      {Key? key, required this.verificationId, required this.onCodeEntered})
-      : super(key: key);
+      {super.key, required this.verificationId, required this.onCodeEntered});
 
   @override
+  // ignore: library_private_types_in_public_api
   _VerifyOtpState createState() => _VerifyOtpState();
 }
 
@@ -18,20 +18,20 @@ class _VerifyOtpState extends State<VerifyOtp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Verify OTP')),
+      appBar: AppBar(title: const Text('Verify OTP')),
       body: Column(
         children: [
           TextField(
             controller: _otpController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Enter OTP'),
+            decoration: const InputDecoration(labelText: 'Enter OTP'),
           ),
           ElevatedButton(
             onPressed: () {
               widget.onCodeEntered(_otpController.text);
            
             },
-            child: Text('Verify'),
+            child: const Text('Verify'),
           ),
         ],
       ),

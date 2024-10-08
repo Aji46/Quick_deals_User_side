@@ -153,6 +153,8 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 class OpenStreetMapExample extends StatefulWidget {
+  const OpenStreetMapExample({super.key});
+
   @override
   _OpenStreetMapExampleState createState() => _OpenStreetMapExampleState();
 }

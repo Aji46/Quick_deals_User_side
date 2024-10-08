@@ -4,14 +4,16 @@ import 'package:quick_o_deals/Controller/auth/provider/email_auth.dart';
 import 'package:quick_o_deals/Controller/auth/provider/login_.dart';
 import 'package:quick_o_deals/View/Pages/user_profile/user_profile_edite.dart';
 import 'package:quick_o_deals/View/widget/bottom_nav_bar/bottom%20_navigation_bar.dart';
+import 'package:quick_o_deals/contants/color.dart';
 
 class ViewEditButton extends StatelessWidget {
-   ViewEditButton({super.key});
+   const ViewEditButton({super.key});
   
   @override
   Widget build(BuildContext context) {
    
     return ElevatedButton(
+      
       onPressed: () {
         //userData.userData =
 
@@ -21,13 +23,14 @@ class ViewEditButton extends StatelessWidget {
               );
       },
       style: ElevatedButton.styleFrom(
+         backgroundColor: MyColors.mycolor3,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         textStyle: const TextStyle(fontSize: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: const Text('View and Edit Profile'),
+      child: const Text('View and Edit Profile',style:TextStyle(fontSize: 16, color: MyColors.mycolor2   )),
     );
   }
 }
@@ -103,15 +106,18 @@ class SignoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      
       onPressed: () => confirmSignOut(context), // Show confirmation dialog
       style: ElevatedButton.styleFrom(
+        backgroundColor: MyColors.mycolor3,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        textStyle: const TextStyle(fontSize: 16),
+        
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: const Text('Sign Out'),
+
+      child: const Text('Sign Out',style:TextStyle(fontSize: 16, color: MyColors.mycolor2),),
     );
   }
 }

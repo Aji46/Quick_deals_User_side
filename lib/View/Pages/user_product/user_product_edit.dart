@@ -7,7 +7,7 @@ import 'package:quick_o_deals/Controller/auth/provider/users_product_edite.dart'
 class ProductEditPage extends StatelessWidget {
   final QueryDocumentSnapshot product;
 
-  ProductEditPage({required this.product});
+  const ProductEditPage({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class ProductEditPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Product'),
+        title: const Text('Edit Product'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -44,8 +44,8 @@ class ProductEditPage extends StatelessWidget {
                 controller: productDetailsController,
                 decoration: const InputDecoration(labelText: 'Product Details'),
               ),
-              SizedBox(height: 10),
-              Text('Existing Images:'),
+              const SizedBox(height: 10),
+              const Text('Existing Images:'),
               SizedBox(
                 height: 100,
                 child: ListView.builder(
@@ -64,11 +64,11 @@ class ProductEditPage extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Consumer<User_ProductController>(
                 builder: (context, controller, child) {
                   return controller.selectedImages.isEmpty
-                      ? Text('No new images selected.')
+                      ? const Text('No new images selected.')
                       : SizedBox(
                           height: 100,
                           child: ListView.builder(
@@ -95,11 +95,11 @@ class ProductEditPage extends StatelessWidget {
                 },
                 child: const Text('Pick New Images'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Consumer<LoadingProvider>(
                 builder: (context, loadingProvider, child) {
                   return loadingProvider.isLoading
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)))
                       : ElevatedButton(
                           onPressed: () {
                             // Fetch the selected images from the controller

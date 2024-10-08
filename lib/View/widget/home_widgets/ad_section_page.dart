@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:quick_o_deals/Model/Product_featch/productMOodel.dart';
 import 'package:shimmer/shimmer.dart';
 class AdSectionPage extends StatelessWidget {
+  const AdSectionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -16,7 +18,7 @@ class AdSectionPage extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text("No Ads Available"));
+          return const Center(child: Text("No Ads Available"));
         }
 
         final ads = snapshot.data!.docs.map((doc) => ProductModel.fromDocument(doc)).toList();
@@ -37,7 +39,7 @@ class AdSectionPage extends StatelessWidget {
           itemCount: 3,
           itemBuilder: (context, index) => Container(
             width: 200,
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             color: Colors.white,
           ),
         ),

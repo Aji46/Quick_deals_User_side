@@ -9,9 +9,12 @@ import 'package:quick_o_deals/View/widget/logos/google_login.dart';
 // Adjust the import according to your project structure
 
 class LoginButtonsWidget extends StatelessWidget {
+  const LoginButtonsWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<LoadingProvider, logProvider>(
+      // ignore: avoid_types_as_parameter_names
       builder: (context, loadingProvider, logProvider, child) {
         return Stack(
           children: [
@@ -34,15 +37,18 @@ class LoginButtonsWidget extends StatelessWidget {
                         logProvider.setLoginStatus(true);
 
                         Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
                           context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          MaterialPageRoute(builder: (context) => const MyHomePage()),
                         );
                       } else {
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Google Sign in failed')),
                         );
                       }
                     } catch (e) {
+                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('An error occurred during Google Sign In: $e')),
                       );

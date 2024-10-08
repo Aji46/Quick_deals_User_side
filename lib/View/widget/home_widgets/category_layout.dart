@@ -16,7 +16,7 @@ class CategoryListView extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text("No Categories Available"));
+          return const Center(child: Text("No Categories Available"));
         }
 
         final categories = snapshot.data!.docs;

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quick_o_deals/View/Pages/chat/chat_model.dart';
+import 'package:quick_o_deals/Model/chat_model/chat_model.dart';
 
 
 class ChattingProvider with ChangeNotifier {
