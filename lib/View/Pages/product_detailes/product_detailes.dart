@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/login_.dart';
 import 'package:quick_o_deals/View/Pages/chat/chatscreen.dart';
 import 'package:quick_o_deals/View/Pages/use_login/user_login.dart';
+import 'package:quick_o_deals/contants/color.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final String productId;
@@ -18,7 +19,10 @@ class ProductDetailsPage extends StatelessWidget {
         title: Text('Product Details'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('user_products').doc(productId).get(),
+        future: FirebaseFirestore.instance
+            .collection('user_products')
+            .doc(productId)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -57,23 +61,27 @@ class ProductDetailsPage extends StatelessWidget {
                                 child: Stack(
                                   children: [
                                     // Placeholder while loading the image
-                                    const Center(child: CircularProgressIndicator()),
-                                     ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                imageUrl: imageUrl,
-                                fit: BoxFit.cover,
-                                
-                                placeholder: (context, url) => Container(
-                                  height: 300,
-                                  color: Colors.grey[300],
-                                  child: const Center(child: CircularProgressIndicator()),
-                                ),
-                                errorWidget: (context, url, error) => const Center(
-                                  child: Icon(Icons.error),
-                                ),
-                              ),
-                            ),
+                                    const Center(
+                                        child: CircularProgressIndicator()),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: imageUrl,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          height: 300,
+                                          color: Colors.grey[300],
+                                          child: const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Center(
+                                          child: Icon(Icons.error),
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -85,60 +93,72 @@ class ProductDetailsPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   productName,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Rs $productPrice',
-                  style: const TextStyle(fontSize: 20, color: Colors.green),
+                  style:
+                      const TextStyle(fontSize: 20, color: MyColors.mycolor6),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'Details:',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(productDetails),
                 const SizedBox(height: 16),
                 Text(
                   'Additional Info:',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(productAdditionalInfo),
-                  const SizedBox(height: 16),
+                const SizedBox(height: 16),
                 const Text(
                   'Location:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(Location),
-                         const SizedBox(height: 16),
-              ElevatedButton(
-  onPressed: () {
-    // Access the logProvider to check if the user is logged in
-    final logedProvider = Provider.of<logProvider>(context, listen: false);
-    
-    // Check login status and navigate accordingly
-    if (logedProvider.isLoggedIn) {
-
-      String userId = productData['userId'];
-      // Navigate to the chat screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ChatScreen(userId: userId)), // Replace ChatScreen with your actual chat screen widget
-      );
-    } else {
-      // Navigate to the login screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => UserLogin()), // Replace LoginScreen with your actual login screen widget
-      );
-    }
-  },
-  child: const Text(
-    "Make enquiry",
-    style: TextStyle(color: Colors.blueAccent),
-  ),
-)
-
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final logedProvider =
+                          Provider.of<logProvider>(context, listen: false);
+                      if (logedProvider.isLoggedIn) {
+                        String userId = productData['userId'];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChatScreen(
+                                  userId:
+                                      userId)),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  UserLogin()), 
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyColors.mycolor3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      "Make enquiry",
+                      style: TextStyle(color: MyColors.mycolor2),
+                    ),
+                  ),
+                )
               ],
             ),
           );

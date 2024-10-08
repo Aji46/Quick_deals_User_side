@@ -115,25 +115,85 @@ class ChattingProvider with ChangeNotifier {
         .snapshots();
   }
 
+  
 
-     Stream<QuerySnapshot> getUserChats(String userId) {
-    return _fireStore
-        .collection('chat_rooms')
-        .where('participants', arrayContains: userId)
-        .snapshots();
-  }
 
-  void fetchAllChats() {
-    notifyListeners(); // Trigger the rebuild of the chat list screen
-  }
 
-    Stream<QuerySnapshot> getAllChats() {
-    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+Stream<QuerySnapshot> getUserChats(String userId) {
+  print("Fetching chats for receiver: $userId");
+  return _fireStore
+      .collection('chat_rooms')
+      .where('participants', arrayContains: userId)
+      .snapshots()
+      .handleError((error) {
+        print('Error fetching chats: $error'); 
+      });
+}
+
+Stream<List<Map<String, dynamic>>> getAllChatRooms(String currentUserId) {
+  return FirebaseFirestore.instance
+      .collection('chat_rooms')
+      .snapshots()
+      .asyncMap((snapshot) async {
+        // Filter chat rooms where currentUserId is either the sender or receiver
+        final filteredChatRooms = snapshot.docs.where((doc) {
+          final ids = doc.id.split('_');
+          final receiverId = ids[0];
+          final senderId = ids[1];
+
+          return receiverId == currentUserId || senderId == currentUserId;
+        }).toList();
+
+        // Fetch messages for each filtered chat room
+        List<Map<String, dynamic>> chatRoomsWithMessages = [];
+
+        for (var chatRoom in filteredChatRooms) {
+          final chatRoomId = chatRoom.id;
+
+          // Get the latest messages from the `messages` subcollection
+          final messagesSnapshot = await FirebaseFirestore.instance
+              .collection('chat_rooms')
+              .doc(chatRoomId)
+              .collection('messages')
+              .orderBy('timestamp', descending: true)
+              .get();
+
+          // Convert message documents to a list of maps
+          List<Map<String, dynamic>> messages = messagesSnapshot.docs
+              .map((msgDoc) => msgDoc.data())
+              .toList();
+
+          // Append chat room data with messages
+          chatRoomsWithMessages.add({
+            'chatRoomId': chatRoomId,
+            'messages': messages,
+            ...chatRoom.data(),
+          });
+        }
+
+        return chatRoomsWithMessages;
+      });
+}
+
+
+
+
+
+void fetchAllChats() {
+  notifyListeners(); // Trigger the rebuild of the chat list screen
+}
+
+
+  Stream<QuerySnapshot<Object?>> getMessagesForChatRoom(String chatRoomId) {
     return FirebaseFirestore.instance
         .collection('chat_rooms')
-        .where('participants', arrayContains: currentUserId)
-        .snapshots();
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .handleError((error) {
+          print('Error fetching messages: $error');
+        });
   }
-
-
 }

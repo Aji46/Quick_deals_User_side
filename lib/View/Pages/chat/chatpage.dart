@@ -5,21 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:quick_o_deals/View/Pages/chat/chating_provider.dart';
 import 'package:quick_o_deals/View/Pages/chat/chatscreen.dart';
 
-class ChatListScreen extends StatefulWidget {
-  const ChatListScreen({Key? key}) : super(key: key);
-
-  @override
-  _ChatListScreenState createState() => _ChatListScreenState();
-}
-
-class _ChatListScreenState extends State<ChatListScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ChattingProvider>(context, listen: false).fetchAllChats();
-    });
-  }
+class ChatListScreen extends StatelessWidget {
+  const ChatListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,72 +17,48 @@ class _ChatListScreenState extends State<ChatListScreen> {
       ),
       body: Consumer<ChattingProvider>(
         builder: (context, chattingProvider, _) {
-          return StreamBuilder<QuerySnapshot>(
-            stream: chattingProvider.getAllChats(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
-              }
+          final currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
+          return StreamBuilder<List<Map<String, dynamic>>>(
+            stream: chattingProvider.getAllChatRooms(currentUserId),
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text("No Chats Available"));
+              if (snapshot.hasError) {
+                return Center(child: Text("Error: ${snapshot.error}"));
               }
 
-              final chatRooms = snapshot.data!.docs;
+              final chatRooms = snapshot.data ?? [];
+
+              if (chatRooms.isEmpty) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        "No chats available",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "Start a new conversation to see it here!",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                );
+              }
 
               return ListView.builder(
                 itemCount: chatRooms.length,
                 itemBuilder: (context, index) {
                   final chatRoom = chatRooms[index];
-                  final otherUserId = _getOtherUserId(chatRoom);
-
-                  return FutureBuilder<Map<String, dynamic>?>(
-                    future: _getUserDetails(otherUserId),
-                    builder: (context, userSnapshot) {
-                      if (!userSnapshot.hasData) {
-                        return const ListTile(
-                          title: Text("Loading..."),
-                        );
-                      }
-
-                      final userData = userSnapshot.data!;
-                      return StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('chat_rooms')
-                            .doc(chatRoom.id)
-                            .collection('messages')
-                            .orderBy('timestamp', descending: true)
-                            .limit(1)
-                            .snapshots(),
-                        builder: (context, messageSnapshot) {
-                          String lastMessageText = "No messages yet";
-                          if (messageSnapshot.hasData && messageSnapshot.data!.docs.isNotEmpty) {
-                            lastMessageText = messageSnapshot.data!.docs.first['message'];
-                          }
-
-                          return ListTile(
-                            title: Text(userData['username']),
-                            subtitle: Text(lastMessageText),
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(userData['profilePicture']),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChatScreen(userId: otherUserId),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  );
+                  return _buildChatRoomTile(context, chatRoom);
                 },
               );
             },
@@ -105,10 +68,60 @@ class _ChatListScreenState extends State<ChatListScreen> {
     );
   }
 
-  String _getOtherUserId(DocumentSnapshot chatRoom) {
+  Widget _buildChatRoomTile(BuildContext context, Map<String, dynamic> chatRoom) {
+    final chatRoomId = chatRoom['chatRoomId'];
+    final messages = chatRoom['messages'] as List<dynamic>?;
+
+    if (messages == null || messages.isEmpty) {
+      return ListTile(
+        title: Text('No messages yet in chat room $chatRoomId'),
+      );
+    }
+
+    final lastMessage = messages.first as Map<String, dynamic>;
     final currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    final participants = List<String>.from(chatRoom['participants']);
-    return participants.firstWhere((id) => id != currentUserId);
+    final otherUserId = chatRoomId.split('_').firstWhere((id) => id != currentUserId, orElse: () => 'Unknown');
+
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: _getUserDetails(otherUserId),
+      builder: (context, userSnapshot) {
+        if (userSnapshot.connectionState == ConnectionState.waiting) {
+          return const ListTile(
+            title: Text("Loading user..."),
+          );
+        }
+
+        if (userSnapshot.hasError) {
+          return ListTile(
+            title: Text("Error loading user: ${userSnapshot.error}"),
+          );
+        }
+
+        final userData = userSnapshot.data ?? {};
+        final lastMessageText = lastMessage['message'] as String? ?? 'No message';
+
+        return ListTile(
+          title: Text(userData['username'] ?? 'Unknown User'),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(lastMessageText, maxLines: 1, overflow: TextOverflow.ellipsis),
+            ],
+          ),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(userData['profilePicture'] ?? 'https://via.placeholder.com/150'),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatScreen(userId: otherUserId),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   Future<Map<String, dynamic>?> _getUserDetails(String userId) async {

@@ -75,7 +75,7 @@ class HorizontalProductList extends StatelessWidget {
           var product = products[index];
           String imageUrl = product.images.isNotEmpty ? product.images[0] : 'assets/placeholder.png';
 
-          return Consumer<LikedHiveProvider>(
+          return Consumer<LikedProductsProvider>(
             builder: (context, likedProductsProvider, child) {
               bool isLiked = likedProductsProvider.isProductLiked(product.id);
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/Provider/like_button.dart';
 import 'package:quick_o_deals/Controller/auth/provider/Serach_provider.dart';
+import 'package:quick_o_deals/View/Pages/home/product_list_page.dart';
 import 'package:quick_o_deals/View/Pages/home/search_page.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/ad_section_page.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/category_layout.dart';
@@ -12,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => LikedHiveProvider(),
+      create: (_) => LikedProductsProvider(),
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -30,15 +31,15 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   const CategoryListView(),
                   const SizedBox(height: 20),
-                  _sectionTitle('Featured'),
+                  _sectionTitle('Featured',context),
                   const HorizontalProductList(),
                   const SizedBox(height: 20),
                   AdSectionPage(),
                   const SizedBox(height: 20),
-                  _sectionTitle('Most Viewed'),
+                  _sectionTitle('Most Viewed',context),
                   const HorizontalProductList(),
                   const SizedBox(height: 20),
-                  _sectionTitle('MotorBikes'),
+                  _sectionTitle('MotorBikes',context),
                   HorizontalProductList(),
                 ],
               ),
@@ -93,13 +94,20 @@ class HomeScreen extends StatelessWidget {
   );
 }
 
-  Widget _sectionTitle(String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        Text('See more', style: TextStyle(color: Colors.blue)),
-      ],
-    );
+  Widget _sectionTitle(String title,BuildContext context) {
+ return Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+    GestureDetector(
+      onTap: () {
+         Navigator.push( context, MaterialPageRoute(builder: (context) =>  ProductListPage()),
+      );
+      },
+      child: Text('See more', style: TextStyle(color: Colors.blue)),
+    ),
+  ],
+);
+
   }
 }

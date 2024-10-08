@@ -34,4 +34,6 @@ class ProductModel {
       timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(), 
     );
   }
+
+  
 }

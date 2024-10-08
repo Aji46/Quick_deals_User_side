@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/register.dart';
+import 'package:quick_o_deals/View/Pages/user_register/terms_and_policy.dart';
 
 class TermsPolicyWidget extends StatelessWidget {
   const TermsPolicyWidget({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class TermsPolicyWidget extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Navigate to terms and policy page or show a dialog
+                      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const PrivacyPolicy()));
                     },
                     child: const Text(
                       "Terms & Policy",
