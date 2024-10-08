@@ -8,16 +8,12 @@ class CategoryProductList extends StatelessWidget {
 
   CategoryProductList({super.key, required this.categoryId});
 
-  // Method to fetch products based on categoryId
   Future<List<QueryDocumentSnapshot>> getProductsByCategory(String catId) async {
     try {
-      // Query Firestore collection 'user_products' where 'categoryId' is equal to the selected one
       QuerySnapshot querySnapshot = await _firestore
           .collection('user_products')
-          .where('categoryId', isEqualTo: catId) // Filter by categoryId
+          .where('categoryId', isEqualTo: catId) 
           .get();
-
-      // Return the list of documents
       return querySnapshot.docs;
     } catch (e) {
       print('Error fetching products: $e');
@@ -32,36 +28,35 @@ class CategoryProductList extends StatelessWidget {
         title: Text(categoryId),
       ),
       body: FutureBuilder<List<QueryDocumentSnapshot>>(
-        future: getProductsByCategory(categoryId), // Call the function to get filtered products
+        future: getProductsByCategory(categoryId), 
         builder: (BuildContext context, AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),)); // Show loading indicator
+            return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),)); 
           } else if (snapshot.hasError) {
-            return const Center(child: Text('Error fetching products')); // Handle errors
+            return const Center(child: Text('Error fetching products')); 
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No products found for this category')); // No data found
+            return const Center(child: Text('No products found for this category')); 
           } else {
-            // List of product documents retrieved from Firestore
             List<QueryDocumentSnapshot> products = snapshot.data!;
 
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Set the number of columns in the grid
-                crossAxisSpacing: 10, // Spacing between columns
-                mainAxisSpacing: 10,  // Spacing between rows
-                childAspectRatio: 3 / 3, // Aspect ratio of grid items (width/height)
+                crossAxisCount: 2, 
+                crossAxisSpacing: 10, 
+                mainAxisSpacing: 10, 
+                childAspectRatio: 3 / 3, 
               ),
               itemCount: products.length,
               itemBuilder: (BuildContext context, int index) {
                 final product = products[index].data() as Map<String, dynamic>;
-                final documentId = products[index].id; // Get the document ID
+                final documentId = products[index].id; 
 
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailsPage(productId: documentId), // Pass the document ID
+                        builder: (context) => ProductDetailsPage(productId: documentId), 
                       ),
                     );
                   },
@@ -74,7 +69,7 @@ class CategoryProductList extends StatelessWidget {
                           child: product['images'] != null && product['images'].isNotEmpty
                               ? Image.network(
                                   product['images'][0], 
-                                  fit: BoxFit.cover, // Adjust image to fit the grid item
+                                  fit: BoxFit.cover, 
                                   width: double.infinity, 
                                   height: double.infinity,
                                 )

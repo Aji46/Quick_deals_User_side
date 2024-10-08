@@ -76,12 +76,12 @@ Future<void> _fetchUserDetails() async {
             onPressed: () => _makePhoneCall(),
             icon: const Icon(Icons.phone),
           ),
-          // IconButton(
-          //   icon: const Icon(Icons.video_call),
-          //   onPressed: () {
-          
-          //   },
-          // ),
+          IconButton(
+            icon: const Icon(Icons.video_call),
+            onPressed: () {
+              // TODO: Implement video call logic
+            },
+          ),
         ],
       ),
       body: Column(
@@ -105,7 +105,7 @@ Future<void> _fetchUserDetails() async {
             }
 
             if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
+              return const Center(child: CircularProgressIndicator());
             }
 
             WidgetsBinding.instance.addPostFrameCallback((_) {

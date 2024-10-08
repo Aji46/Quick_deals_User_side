@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_o_deals/Controller/Provider/chat_controller.dart';
 import 'package:quick_o_deals/Controller/Provider/like_button.dart';
 import 'package:quick_o_deals/Controller/Provider/location_provider.dart';
 import 'package:quick_o_deals/Controller/Provider/profile_image_check.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LocationProvider()),
         ChangeNotifierProvider(create: (_) => ProductLocationProvider()),
         ChangeNotifierProvider(create: (_) => ChattingProvider()),
+       
  
 
  
