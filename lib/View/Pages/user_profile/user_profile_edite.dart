@@ -6,6 +6,8 @@ import 'package:quick_o_deals/View/widget/user_profile/contact_section.dart';
 import 'package:quick_o_deals/View/widget/user_profile/top_part_profile.dart';
 
 class ProfileEditPage extends StatelessWidget {
+  const ProfileEditPage({super.key});
+
   @override
   Widget build(BuildContext context) {
 

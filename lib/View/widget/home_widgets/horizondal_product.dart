@@ -20,7 +20,7 @@ class HorizontalProductList extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text("No Products Available"));
+          return const Center(child: Text("No Products Available"));
         }
 
         final products = snapshot.data!.docs.map((doc) => ProductModel.fromDocument(doc)).toList();

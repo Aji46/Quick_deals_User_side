@@ -60,7 +60,7 @@ class UserRegister extends StatelessWidget {
                     acceptedTerms: termsProvider.acceptedTerms,
                   ),
                   const SizedBox(height: 16.0),
-                  LoginButtonsWidget(),
+                  const LoginButtonsWidget(),
                   const SizedBox(height: 16.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

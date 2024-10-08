@@ -11,7 +11,6 @@ class ProductEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get product details from the passed product document
     final productNameController =
         TextEditingController(text: product.get('productName'));
     final productPriceController =
@@ -102,7 +101,6 @@ class ProductEditPage extends StatelessWidget {
                       ? const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)))
                       : ElevatedButton(
                           onPressed: () {
-                            // Fetch the selected images from the controller
                             final controller = Provider.of<User_ProductController>(
                                 context,
                                 listen: false);

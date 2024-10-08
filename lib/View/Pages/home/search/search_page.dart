@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/Serach_provider.dart';
+import 'package:quick_o_deals/View/Pages/home/search/filterModel.dart';
 import 'package:quick_o_deals/View/Pages/product_detailes/product_detailes.dart';
-import 'package:shimmer/shimmer.dart'; 
+import 'package:shimmer/shimmer.dart';
+
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Fetch categories when the page is built
     final provider = Provider.of<ProductSearchProvider>(context, listen: false);
     provider.listenToCategories();
 
@@ -42,7 +43,10 @@ class SearchPage extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.filter_list),
                       onPressed: () {
-                        _showFilterModal(context, provider);
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => FilterModal(provider: provider),
+                        );
                       },
                     ),
                   ],
@@ -100,86 +104,6 @@ class SearchPage extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  void _showFilterModal(BuildContext context, ProductSearchProvider provider) {
-     provider.fetchMaxProductPrice();
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        double _minPrice = 0;
-        double _maxPrice = provider.maxProductPrice;
-        bool _recentlyAdded = false;
-
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Filter by:'),
-                   DropdownButton<String>(
-                    hint: const Text('Select Category'),
-                    value: provider.selectedCategory.isEmpty ? null : provider.selectedCategory,
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        provider.selectCategory(newValue); // Use the Provider method to update category
-                      }
-                    },
-                    items: provider.categories.map<DropdownMenuItem<String>>(
-                      (category) {
-                        return DropdownMenuItem<String>(
-                          value: category.id, // Use the category ID as the value
-                          child: Text(category.name),
-                        );
-                      },
-                    ).toList(),
-                  ),
-                  RangeSlider(
-                    values: RangeValues(_minPrice, _maxPrice),
-                    min: 0,
-                    max: provider.maxProductPrice,
-                    divisions: 100,
-                    labels: RangeLabels(
-                      _minPrice.round().toString(),
-                      _maxPrice.round().toString(),
-                    ),
-                    onChanged: (RangeValues values) {
-                      setState(() {
-                        _minPrice = values.start;
-                        _maxPrice = values.end;
-                      });
-                    },
-                  ),
-                  SwitchListTile(
-                    title: const Text('Recently Added'),
-                    value: _recentlyAdded,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _recentlyAdded = value;
-                      });
-                    },
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      provider.filterProducts(
-                        categoryId: provider.selectedCategory, // Use selected category from provider
-                        minPrice: _minPrice,
-                        maxPrice: _maxPrice,
-                        recentlyAdded: _recentlyAdded,
-                      );
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Apply Filters'),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/Provider/like_button.dart';
 import 'package:quick_o_deals/Controller/auth/provider/Serach_provider.dart';
 import 'package:quick_o_deals/View/Pages/home/product_list_page.dart';
-import 'package:quick_o_deals/View/Pages/home/search_page.dart';
+import 'package:quick_o_deals/View/Pages/home/search/search_page.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/ad_section_page.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/category_layout.dart';
 import 'package:quick_o_deals/View/widget/home_widgets/horizondal_product.dart';

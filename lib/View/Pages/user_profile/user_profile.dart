@@ -16,7 +16,6 @@ class UserProfile extends StatelessWidget {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
         if (authProvider.user == null) {
-          // Redirect to the login page or show a message
           WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                                   context,
@@ -32,17 +31,13 @@ class UserProfile extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }     
-
             if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             }
-
             if (!snapshot.hasData || snapshot.data == null) {
               return const Center(child: Text('No user details found'));
             }
-
             var userDetails = snapshot.data!;
-
             return Scaffold(
               appBar: AppBar(
                 title: const Text('User Profile'),
@@ -63,11 +58,10 @@ class UserProfile extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Center(child: ViewEditButton()),
+                    const Center(child: ViewEditButton()),
                     const SizedBox(height: 30),
                     Column(
                       children: [
-
                          ProfileOption(
                           icon: Icons.production_quantity_limits_outlined,
                           title: 'Your products',
@@ -78,8 +72,7 @@ class UserProfile extends StatelessWidget {
                                 );
                           },
                         ),
-                          const SizedBox(height: 16),
-                       
+                          const SizedBox(height: 16),                      
                         ProfileOption(
                           icon: Icons.privacy_tip_outlined,
                           title: 'Privacy & Policy',
@@ -92,7 +85,7 @@ class UserProfile extends StatelessWidget {
                           icon: Icons.report_outlined,
                           title: 'Report Accounts',
                           onTap: () {
-                            // Action for Report Accounts
+                            
                           },
                         ),
                         const SizedBox(height: 16),
@@ -100,7 +93,7 @@ class UserProfile extends StatelessWidget {
                           icon: Icons.help_outline_sharp,
                           title: 'Help and Support',
                           onTap: () {
-                            // Action for Help and Support
+
                           },
                         ),
                            const SizedBox(height: 26),

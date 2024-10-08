@@ -13,7 +13,7 @@ class UserLogin extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
-  UserLogin({Key? key}) : super(key: key);
+  UserLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class UserLogin extends StatelessWidget {
           return ListView(
             children: [
               LogoWidget(),
-              ImageWidget(
+              const ImageWidget(
                 imagePath: "assets/OIG1 (1).jpeg",
                 height: 200,
                 width: 400,
@@ -42,7 +42,7 @@ class UserLogin extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              LoginButtonsWidget(),
+              const LoginButtonsWidget(),
               const SizedBox(
                 height: 10,
               ),

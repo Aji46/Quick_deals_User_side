@@ -76,12 +76,12 @@ Future<void> _fetchUserDetails() async {
             onPressed: () => _makePhoneCall(),
             icon: const Icon(Icons.phone),
           ),
-          IconButton(
-            icon: const Icon(Icons.video_call),
-            onPressed: () {
-              // TODO: Implement video call logic
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.video_call),
+          //   onPressed: () {
+          
+          //   },
+          // ),
         ],
       ),
       body: Column(

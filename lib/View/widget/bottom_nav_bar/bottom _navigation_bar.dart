@@ -11,11 +11,10 @@ import 'package:quick_o_deals/View/Pages/user_profile/user_profile.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
@@ -91,13 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         return HomeScreen();
       case 1:
-        return authProvider.isLoggedIn ? ChatListScreen() : UserLogin();
+        return authProvider.isLoggedIn ? const ChatListScreen() : UserLogin();
       case 2:
         return authProvider.isLoggedIn ? ProductAdd() : UserLogin();
       case 3:
         return const FavoritesPage();
       case 4:
-        return authProvider.isLoggedIn ? UserProfile() : UserLogin();
+        return authProvider.isLoggedIn ? const UserProfile() : UserLogin();
       default:
         return HomeScreen();
     }
