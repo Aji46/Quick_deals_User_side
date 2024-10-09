@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/chating_provider.dart';
 import 'package:quick_o_deals/View/Pages/chat/chatscreen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});
@@ -109,8 +111,24 @@ class ChatListScreen extends StatelessWidget {
             ],
           ),
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(userData['profilePicture'] ?? 'https://via.placeholder.com/150'),
-          ),
+  backgroundImage: CachedNetworkImageProvider(userData['profilePicture'] ?? 'https://via.placeholder.com/150'),
+  child: CachedNetworkImage(
+    imageUrl: userData['profilePicture'] ?? 'https://via.placeholder.com/150',
+    imageBuilder: (context, imageProvider) => CircleAvatar(
+      backgroundImage: imageProvider,
+    ),
+    placeholder: (context, url) => Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: CircleAvatar(
+        backgroundColor: Colors.grey[300],
+      ),
+    ),
+    errorWidget: (context, url, error) => const CircleAvatar(
+      backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+    ),
+  ),
+),
           onTap: () {
             Navigator.push(
               context,

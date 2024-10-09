@@ -1,10 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/auth/provider/Serach_provider.dart';
 import 'package:quick_o_deals/View/Pages/home/search/filterModel.dart';
 import 'package:quick_o_deals/View/Pages/product_detailes/product_detailes.dart';
 import 'package:shimmer/shimmer.dart';
-
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -63,28 +63,25 @@ class SearchPage extends StatelessWidget {
                           return ListTile(
                             leading: SizedBox(
                               width: 50,
-                              child: Image.network(
-                                product.images.isNotEmpty ? product.images[0] : '',
-                                fit: BoxFit.cover,
-                                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  } else {
-                                    return Shimmer.fromColors(
-                                      baseColor: Colors.grey[300]!,
-                                      highlightColor: Colors.grey[100]!,
-                                      child: Container(
-                                        width: 50,
-                                        height: 50,
-                                        color: Colors.white,
+                              child: CachedNetworkImage(
+                                  imageUrl: product.images.isNotEmpty
+                                      ? product.images[0]
+                                      : '',
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) =>
+                                      Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    );
-                                  }
-                                },
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Center(child: Icon(Icons.error));
-                                },
-                              ),
+                                  errorWidget: (context, url, error) =>
+                                      const Center(
+                                        child: Icon(Icons.error),
+                                      )),
                             ),
                             title: Text(product.productName),
                             subtitle: Text('Price: ${product.productPrice}'),
@@ -92,7 +89,8 @@ class SearchPage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ProductDetailsPage(productId: product.id),
+                                  builder: (context) =>
+                                      ProductDetailsPage(productId: product.id),
                                 ),
                               );
                             },

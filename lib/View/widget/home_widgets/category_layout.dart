@@ -1,4 +1,5 @@
-// category_list_view.dart
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_o_deals/View/Pages/category/catogery_poduct_list.dart';
@@ -47,11 +48,11 @@ class CategoryListView extends StatelessWidget {
         );
       },
       child: CircleAvatar(
-        radius: 30,
-        backgroundImage: imageUrl != null
-            ? NetworkImage(imageUrl)
-            : const AssetImage('assets/placeholder.png') as ImageProvider,
-      ),
+  radius: 30,
+  backgroundImage: imageUrl != null
+    ? CachedNetworkImageProvider(imageUrl)
+    : const AssetImage('assets/placeholder.png') as ImageProvider,
+),
     ),
     const SizedBox(height: 8),
     Text(

@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,6 @@ class FavoritesPage extends StatelessWidget {
 
                   return GestureDetector(
   onTap: () {
-    // Handle tap event here, e.g., navigate to product details page
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -84,7 +84,22 @@ class FavoritesPage extends StatelessWidget {
     );
   },
   child: ListTile(
-                    leading: Image.network(imageUrl, width: 50, height: 50, fit: BoxFit.cover),
+                    leading: CachedNetworkImage(
+  imageUrl: imageUrl,
+  width: 50,
+  height: 50,
+  fit: BoxFit.cover,
+  placeholder:  (context, url) => Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Container(
+      width: 50,
+      height: 50,
+      color: Colors.white,
+    ),
+  ),
+  errorWidget: (context, url, error) => const Icon(Icons.error),
+),
                     title: Text(productName),
                     subtitle: Text('Rs $productPrice'),
 
