@@ -35,18 +35,27 @@ class _FilterModalState extends State<FilterModal> {
             value: widget.provider.selectedCategory.isEmpty ? null : widget.provider.selectedCategory,
             onChanged: (String? newValue) {
               if (newValue != null) {
-                widget.provider.selectCategory(newValue); // Use the Provider method to update category
+                widget.provider.selectCategory(newValue);
               }
             },
             items: widget.provider.categories.map<DropdownMenuItem<String>>(
               (category) {
                 return DropdownMenuItem<String>(
-                  value: category.id, // Use the category ID as the value
+                  value: category.id,
                   child: Text(category.name),
                 );
               },
             ).toList(),
           ),
+           const Text("Price Range"), 
+          Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+  children: [
+    Text("Min ${_minPrice.round().toString()}"),
+    Text("Max ${_maxPrice.round().toString()}"),
+  ],
+),
+
           RangeSlider(
             values: RangeValues(_minPrice, _maxPrice),
             min: 0,

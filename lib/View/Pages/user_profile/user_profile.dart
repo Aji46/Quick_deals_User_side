@@ -20,11 +20,10 @@ class UserProfile extends StatelessWidget {
               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(builder: (context) => const MyHomePage()),
-                                );// Adjust the route name as needed
+                                );
           });
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
         }
-
         return FutureBuilder<Map<String, dynamic>?>(
           future: authProvider.getUserDetails(),
           builder: (context, snapshot) {

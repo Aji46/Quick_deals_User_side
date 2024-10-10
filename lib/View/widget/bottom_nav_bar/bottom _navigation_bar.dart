@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         return authProvider.isLoggedIn ? const ChatListScreen() : UserLogin();
       case 2:
-        return authProvider.isLoggedIn ? ProductAdd() : UserLogin();
+        return authProvider.isLoggedIn ? const ProductAdd() : UserLogin();
       case 3:
         return const FavoritesPage();
       case 4:

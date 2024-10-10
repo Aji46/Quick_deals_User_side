@@ -1,7 +1,6 @@
 // lib/main.dart
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_o_deals/Controller/Provider/like_button.dart';
 import 'package:quick_o_deals/Controller/Provider/location_provider.dart';
@@ -19,7 +18,6 @@ import 'package:quick_o_deals/Controller/auth/provider/users_product_edite.dart'
 import 'package:quick_o_deals/Controller/validation/provider.dart';
 import 'package:quick_o_deals/Model/auth/auth.dart';
 import 'package:quick_o_deals/View/Pages/splash_screen.dart';
-import 'package:quick_o_deals/View/widget/bottom_nav_bar/bottom%20_navigation_bar.dart';
 import 'package:quick_o_deals/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,8 +25,6 @@ import 'Controller/Provider/product_provider.dart';
 
 
 void main() async {
-    await Hive.initFlutter();
-  await Hive.openBox('liked_products'); 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
      options: DefaultFirebaseOptions.currentPlatform, 
@@ -72,17 +68,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LocationProvider()),
         ChangeNotifierProvider(create: (_) => ProductLocationProvider()),
         ChangeNotifierProvider(create: (_) => ChattingProvider()),
-       
- 
-
- 
-      
-  
-    
-//  ChangeNotifierProvider(
-//   create: (Bcontext) => ProfileEditProvider(context),
-// ),
-
       ],
       child: MaterialApp(
         title: 'Quick O Deals',

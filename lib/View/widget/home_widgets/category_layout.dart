@@ -23,14 +23,14 @@ class CategoryListView extends StatelessWidget {
         final categories = snapshot.data!.docs;
 
         return SizedBox(
-          height: 100, // Height for the horizontal list
+          height: 100, 
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: categories.length,
             itemBuilder: (context, index) {
               var categoryData = categories[index].data() as Map<String, dynamic>;
-              String categoryName = categories[index].id; // Document ID as the category name
-              String? imageUrl = categoryData['image']; // Image URL from document data
+              String categoryName = categories[index].id; 
+              String? imageUrl = categoryData['image']; 
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),

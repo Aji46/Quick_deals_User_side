@@ -17,10 +17,15 @@ class ProductListPage extends StatelessWidget {
         future: fetchUserProducts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
+            return Center(
+                child: Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                // Adjust height based on your UI needs
+                color: Colors.white,
+              ),
+            ));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -34,12 +39,15 @@ class ProductListPage extends StatelessWidget {
                 return ListTile(
                   leading: CachedNetworkImage(
                     imageUrl: product.images[0],
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
                     placeholder: (context, url) => Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
                       child: Container(
-                        width: 50,
-                        height: 50,
+                        width: 70,
+                        height: 70,
                         color: Colors.white,
                       ),
                     ),

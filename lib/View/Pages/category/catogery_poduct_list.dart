@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_o_deals/View/Pages/product_detailes/product_detailes.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CategoryProductList extends StatelessWidget {
   final String categoryId;
@@ -66,15 +68,25 @@ class CategoryProductList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: product['images'] != null && product['images'].isNotEmpty
-                              ? Image.network(
-                                  product['images'][0], 
-                                  fit: BoxFit.cover, 
-                                  width: double.infinity, 
-                                  height: double.infinity,
-                                )
-                              : const Icon(Icons.image_not_supported, size: 50),
-                        ),
+  child: product['images'] != null && product['images'].isNotEmpty
+      ? CachedNetworkImage(
+          imageUrl: product['images'][0],
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.white,
+            ),
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error, size: 50),
+        )
+      : const Icon(Icons.image_not_supported, size: 50),
+),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
