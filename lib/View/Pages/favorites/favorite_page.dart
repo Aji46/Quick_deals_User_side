@@ -27,11 +27,11 @@ class FavoritesPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final productId = likedProducts[index];
 
-              return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection('user_products')
-                    .doc(productId) // Fetch the product by its document ID
-                    .get(),
+               return StreamBuilder<DocumentSnapshot>(
+  stream: FirebaseFirestore.instance
+      .collection('user_products')
+      .doc(productId)
+      .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     // Return shimmer effect while loading
