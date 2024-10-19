@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SplashScreenWidget(),
+        home: const SplashScreenWidget(),
         // const MyHomePage(),
       ),
        );
