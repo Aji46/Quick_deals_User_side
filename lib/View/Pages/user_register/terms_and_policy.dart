@@ -37,7 +37,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
         ),
       )
       ..loadRequest(Uri.parse(
-          'https://www.termsfeed.com/live/c142b781-5e2e-44f0-a4fc-39fce91ba783'));
+          'https://www.termsfeed.com/live/86c2c399-5a1a-4b61-89d0-65f591a11760'));
   }
 
   @override
